@@ -17,6 +17,7 @@
 \usepackage{mathtools}
 \usepackage{empheq}
 \usepackage{graphicx}
+\usepackage{float}          % provides the [H] "exactly here" placement
 \usepackage{array}
 \usepackage{booktabs}
 \usepackage{fancyhdr}
@@ -29,6 +30,7 @@
 \setlength{\parindent}{0pt}
 \setlength{\parskip}{6pt}
 \allowdisplaybreaks
+\raggedbottom
 
 \newcommand{\dd}[1]{\dot{#1}}
 \newcommand{\ddd}[1]{\ddot{#1}}
@@ -44,7 +46,7 @@
 
 % ---- figure that degrades to a placeholder box if the file is missing ----
 \newcommand{\optfig}[3]{%
-  \begin{figure}[htbp]\centering
+  \begin{figure}[H]\centering
   \IfFileExists{#1}{\includegraphics[width=#2\linewidth]{#1}}%
     {\fbox{\parbox[c][3.2cm][c]{0.9\linewidth}{\centering
       \textit{[ Insert \texttt{\detokenize{#1}} here ]}}}}%
@@ -760,6 +762,8 @@ $\ddot{\alpha}$ gives the two expressions implemented in Simulink:
 	- \frac{g}{\ell}\sin\alpha \tag{26}
 \end{align*}
 
+\clearpage
+
 Each expression is built as a separate subsystem, with the accelerations fed
 through the integrator chains $\ddot{x}_{c} \to \dot{x}_{c} \to x_{c}$ and
 $\ddot{\alpha} \to \dot{\alpha} \to \alpha$, all initialised at zero. No
@@ -780,6 +784,8 @@ acceleration $\ddot{x}_{c}$.}
 
 \optfig{assets/images/fig_nl_alpha.png}{0.98}{Nonlinear subsystem implementing (26), the
 angular acceleration $\ddot{\alpha}$.}
+
+\clearpage
 
 \textbf{Linear model.} As required by Remark~6, the linear branch uses the
 full transfer function $G_{ux}(s)$ of (5) --- not the simplified
@@ -833,6 +839,8 @@ The two models would only be expected to separate visibly for a
 substantially larger excitation, where $|\alpha|$ grows beyond roughly
 $30^{\circ}$ and both the curvature of $\sin\alpha$ and the quadratic
 velocity term become significant.
+
+\clearpage
 
 %=======================================================================
 \begin{thebibliography}{9}
