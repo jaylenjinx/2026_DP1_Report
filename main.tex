@@ -41,6 +41,15 @@
 \titlespacing*{\section}{0pt}{14pt}{4pt}
 \titlespacing*{\subsection}{0pt}{10pt}{2pt}
 
+
+% ---- figure that degrades to a placeholder box if the file is missing ----
+\newcommand{\optfig}[3]{%
+  \begin{figure}[htbp]\centering
+  \IfFileExists{#1}{\includegraphics[width=#2\linewidth]{#1}}%
+    {\fbox{\parbox[c][3.2cm][c]{0.9\linewidth}{\centering
+      \textit{[ Insert \texttt{\detokenize{#1}} here ]}}}}%
+  \caption{#3}\end{figure}}
+
 %------------------------------- header --------------------------------
 \fancypagestyle{uts}{%
   \fancyhf{}
@@ -159,15 +168,15 @@ anticlockwise from the negative $x$-axis.
 
 From the geometry of the system, the pendulum mass position is
 \begin{align*}
-	x_{p} &= x_{c} - l\cos\phi \\
-	y_{p} &= -l\sin\phi
+	x_{p} &= x_{c} - \ell \cos\phi \\
+	y_{p} &= -\ell \sin\phi
 \end{align*}
-where $l$ is the distance from the pivot to the centre of oscillation.
+where $\ell$ is the distance from the pivot to the centre of oscillation.
 
 Differentiating with respect to time,
 \begin{align*}
-	\dot{x}_{p} &= \dot{x}_{c} + l\dot{\phi}\sin\phi \\
-	\dot{y}_{p} &= -l\dot{\phi}\cos\phi
+	\dot{x}_{p} &= \dot{x}_{c} + \ell\dot{\phi}\sin\phi \\
+	\dot{y}_{p} &= -\ell\dot{\phi}\cos\phi
 \end{align*}
 
 The total co-kinetic energy of the system is the sum of the cart and pendulum
@@ -187,24 +196,24 @@ and
 Therefore,
 \begin{equation*}
 	T^{*} = \frac{1}{2} M \dot{x}_{c}^{2}
-	+ \frac{1}{2} m \left[ \left( \dot{x}_{c} + l\dot{\phi}\sin\phi \right)^{2}
-	+ \left( -l\dot{\phi}\cos\phi \right)^{2} \right]
+	+ \frac{1}{2} m \left[ \left( \dot{x}_{c} + \ell\dot{\phi}\sin\phi \right)^{2}
+	+ \left( -\ell\dot{\phi}\cos\phi \right)^{2} \right]
 \end{equation*}
 
 Simplifying,
 \begin{align*}
 	T^{*} &= \frac{1}{2} M \dot{x}_{c}^{2}
 	+ \frac{1}{2} m \left( \dot{x}_{c}^{2}
-	+ 2 l \dot{x}_{c} \dot{\phi} \sin\phi + l^{2}\dot{\phi}^{2} \right) \\
+	+ 2 \ell \dot{x}_{c} \dot{\phi} \sin\phi + \ell^{2}\dot{\phi}^{2} \right) \\
 	T^{*} &= \frac{1}{2} \left( M + m \right) \dot{x}_{c}^{2}
-	+ m l \dot{x}_{c} \dot{\phi} \sin\phi
-	+ \frac{1}{2} m l^{2} \dot{\phi}^{2}
+	+ m \ell \dot{x}_{c} \dot{\phi} \sin\phi
+	+ \frac{1}{2} m \ell^{2} \dot{\phi}^{2}
 \end{align*}
 
 Taking the pivot height as the gravitational reference,
 \begin{align*}
 	V &= m g\, y_{p} \\
-	V &= -m g l \sin\phi
+	V &= -m \ell \sin\phi
 \end{align*}
 
 The viscous friction of the cart and pendulum is represented using the Rayleigh
@@ -221,9 +230,9 @@ The Lagrangian of the system is defined as
 Substituting the co-kinetic and potential energy expressions gives
 \begin{equation*}
 	L = \frac{1}{2} \left( M + m \right) \dot{x}_{c}^{2}
-	+ m l \dot{x}_{c} \dot{\phi} \sin\phi
-	+ \frac{1}{2} m l^{2} \dot{\phi}^{2}
-	+ m g l \sin\phi
+	+ m \ell \dot{x}_{c} \dot{\phi} \sin\phi
+	+ \frac{1}{2} m \ell^{2} \dot{\phi}^{2}
+	+ m g \ell \sin\phi
 \end{equation*}
 
 The Euler--Lagrange equation including viscous dissipation is
@@ -236,15 +245,15 @@ The Euler--Lagrange equation including viscous dissipation is
 For $q_{1} = x_{c}$,
 \begin{equation*}
 	\frac{\partial L}{\partial \dot{x}_{c}}
-	= \left( M + m \right) \dot{x}_{c} + m l \dot{\phi} \sin\phi
+	= \left( M + m \right) \dot{x}_{c} + m \ell \dot{\phi} \sin\phi
 \end{equation*}
 
 Taking the time derivative,
 \begin{equation*}
 	\frac{d}{dt} \left( \frac{\partial L}{\partial \dot{x}_{c}} \right)
 	= \left( M + m \right) \ddot{x}_{c}
-	+ m l \ddot{\phi} \sin\phi
-	+ m l \dot{\phi}^{2} \cos\phi
+	+ m \ell \ddot{\phi} \sin\phi
+	+ m \ell \dot{\phi}^{2} \cos\phi
 \end{equation*}
 
 Also,
@@ -265,8 +274,8 @@ substitution into the Euler--Lagrange equation gives the cart equation
 	\boxed{\;
 		F = \left( M + m \right) \ddot{x}_{c}
 		+ b_{c} \dot{x}_{c}
-		+ m l \ddot{\phi} \sin\phi
-		+ m l \dot{\phi}^{2} \cos\phi
+		+ m \ell \ddot{\phi} \sin\phi
+		+ m \ell \dot{\phi}^{2} \cos\phi
 		\;} \tag{1a}
 \end{equation*}
 
@@ -285,21 +294,21 @@ For this system,
 Considering the pendulum coordinate $q_{2} = \phi$,
 \begin{equation*}
 	\frac{\partial L}{\partial \dot{\phi}}
-	= m l \dot{x}_{c} \sin\phi + m l^{2} \dot{\phi}
+	= m \ell \dot{x}_{c} \sin\phi + m \ell^{2} \dot{\phi}
 \end{equation*}
 
 Taking the time derivative,
 \begin{equation*}
 	\frac{d}{dt} \left( \frac{\partial L}{\partial \dot{\phi}} \right)
-	= m l \ddot{x}_{c} \sin\phi
-	+ m l \dot{x}_{c} \dot{\phi} \cos\phi
-	+ m l^{2} \ddot{\phi}
+	= m \ell \ddot{x}_{c} \sin\phi
+	+ m \ell \dot{x}_{c} \dot{\phi} \cos\phi
+	+ m \ell^{2} \ddot{\phi}
 \end{equation*}
 
 Now differentiate $L$ with respect to $\phi$:
 \begin{equation*}
 	\frac{\partial L}{\partial \phi}
-	= m l \dot{x}_{c} \dot{\phi} \cos\phi + m g l \cos\phi
+	= m \ell \dot{x}_{c} \dot{\phi} \cos\phi + m g \ell \cos\phi
 \end{equation*}
 
 For the dissipation term,
@@ -309,18 +318,18 @@ For the dissipation term,
 
 Substituting into Euler--Lagrange:
 \begin{equation*}
-	m l \ddot{x}_{c} \sin\phi
-	+ m l \dot{x}_{c} \dot{\phi} \cos\phi
-	+ m l^{2} \ddot{\phi}
-	- \left( m l \dot{x}_{c} \dot{\phi} \cos\phi + m g l \cos\phi \right)
+	m \ell \ddot{x}_{c} \sin\phi
+	+ m \ell \dot{x}_{c} \dot{\phi} \cos\phi
+	+ m \ell^{2} \ddot{\phi}
+	- \left( m \ell \dot{x}_{c} \dot{\phi} \cos\phi + m g \ell \cos\phi \right)
 	+ b_{p} \dot{\phi} = 0
 \end{equation*}
 
 The matching cross terms cancel, leaving
 \begin{equation*}
 	\boxed{\;
-		m l^{2} \ddot{\phi} + b_{p} \dot{\phi}
-		+ m l \ddot{x}_{c} \sin\phi - m g l \cos\phi = 0
+		m \ell^{2} \ddot{\phi} + b_{p} \dot{\phi}
+		+ m \ell \ddot{x}_{c} \sin\phi - m g \ell \cos\phi = 0
 		\;} \tag{1b}
 \end{equation*}
 
@@ -546,208 +555,284 @@ Hence,
 \section*{Q3: Data-Based System Model Identification \hfill (40 marks)}
 %=======================================================================
 
-Known parameters: $M = 0.22~\mathrm{kg}$, $m = 0.1~\mathrm{kg}$,
-$g = 9.81~\mathrm{m/s^2}$. Unknown: $b_c$, $b_p$, $\l$ and $K_v$.
+The known parameters of the laboratory setup are
+\begin{equation*}
+	M = 0.22~\mathrm{kg} \qquad m = 0.1~\mathrm{kg}
+	\qquad g = 9.81~\mathrm{m/s^{2}}
+\end{equation*}
+while the friction coefficients $b_{c}$ and $b_{p}$, the length to the centre
+of oscillation $\ell$, and the input gain $K_{v}$ are unknown and must be
+identified from the pulse-response data recorded in Lab~3.
 
-\textit{Note:} the supplied \texttt{main\_Q33\_Q34.m} initialises
-\texttt{g = 8.1}; this has been corrected to \texttt{g = 9.81} as specified
-in the assignment brief, since $\l$ scales linearly with $g$
-through~\eqref{eq:ell}.
+\subsection*{Q3.1}
 
-\subsection*{Q3.1) Identification of $\tilde G_{ux}(s)$}
+Following Remark~2, the transfer function is identified between the input
+voltage $v_{m}(t)$ and the cart speed $v_{c}(t)$, and the integrator is
+appended afterwards. This avoids fitting the marginally stable pole at
+$s = 0$.
 
-Following Remark~2, the identification is carried out on the
-\emph{voltage-to-speed} channel and the integrator is appended afterwards,
-which avoids fitting the marginally stable pole at $s=0$.
+Since $v_{c} = \dot{x}_{c}$, that is $V_{c}(s) = s X_{c}(s)$, the simplified
+model (7b) gives
+\begin{align*}
+	G_{uv_{c}}(s) &= s\,\tilde{G}_{ux}(s)
+	= \frac{K_{v}}{\left( M + m \right) s + b_{c}} \tag{8a} \\
+	G_{uv_{c}}(s) &= \frac{a}{s + b}
+	\qquad \text{where} \quad a = \frac{K_{v}}{M+m},
+	\quad b = \frac{b_{c}}{M+m} \tag{8b}
+\end{align*}
 
-From~\eqref{eq:Guvc_simple} the model structure to be fitted is first
-order with no zeros, so in \texttt{main\_Q31\_Q32.m} the input/output
-signals and model orders must be set to
-\begin{center}
-\begin{tabular}{@{}ll@{}}
-\toprule
-\texttt{y  = vc;}   & TF output -- filtered derivative of \texttt{xc\_m} \\
-\texttt{u  = Vm;}   & TF input  -- measured motor voltage \\
-\texttt{np = 1;}    & one pole (from $s+b$) \\
-\texttt{nz = 0;}    & no zeros \\
-\bottomrule
-\end{tabular}
-\end{center}
-so that \texttt{Guvc\_id} $=\hat a/(s+\hat b)$ and
-\texttt{Gux\_id} $=\tfrac1s$\texttt{Guvc\_id}. Record the fitted
-coefficients as
-\begin{equation}
-\hat G_{uv_c}(s) = \frac{\hat a}{s+\hat b}
-\qquad\Longrightarrow\qquad
-\tilde G_{ux}(s) = \frac{\hat a}{s(s+\hat b)} .
-\label{eq:id_uvc}
-\end{equation}
+The structure in (8b) has one pole and no zeros. The MATLAB function
+\texttt{tfest()} is therefore called with \texttt{np = 1} and \texttt{nz = 0},
+using the measured motor voltage \texttt{Vm} as input and the filtered
+derivative \texttt{vc} as output.
 
-\emph{Numerical result (from \texttt{main\_Q31\_Q32.m}):}
-$\hat a = 0.887$, $\hat b = 16.25$,
-fit to estimation data $=93.97\,\%$.
+The identification returns
+\begin{equation*}
+	\hat{G}_{uv_{c}}(s) = \frac{0.887}{s + 16.25} \tag{9}
+\end{equation*}
+with a fit to the estimation data of $93.97\,\%$.
 
-\subsection*{Q3.2) Identification of $G_{x\alpha}(s)$}
+Appending the integrator,
+\begin{equation*}
+	\tilde{G}_{ux}(s) = \frac{1}{s}\,\hat{G}_{uv_{c}}(s)
+	= \frac{0.887}{s \left( s + 16.25 \right)} \tag{10}
+\end{equation*}
 
-Following Remark~3, the fit is performed between the cart acceleration
-$a_c(t)=\ddd x_c(t)$ and the angle $\alpha(t)$. From~\eqref{eq:Gaca} the
-correct structure is second order with no zeros:
-\begin{center}
-\begin{tabular}{@{}ll@{}}
-\toprule
-\texttt{y  = alpha\_rad;} & TF output -- measured angle in radians \\
-\texttt{u  = ac;}         & TF input  -- filtered cart acceleration \\
-\texttt{np = 2;}          & two poles (pendulum resonance) \\
-\texttt{nz = 0;}          & no zeros \\
-\bottomrule
-\end{tabular}
-\end{center}
-Normalising the estimate returned by \texttt{tfest} so that the leading
-denominator coefficient is unity,
-\begin{equation}
-\hat G_{a_c\alpha}(s)
-= \frac{\hat k}{s^{2}+\hat a_1 s+\hat a_0},
-\qquad\Longrightarrow\qquad
-\hat G_{x\alpha}(s)=s^{2}\hat G_{a_c\alpha}(s)
-= \frac{\hat k\, s^{2}}{s^{2}+\hat a_1 s+\hat a_0}.
-\label{eq:id_aca}
-\end{equation}
+\subsection*{Q3.2}
 
-\emph{Numerical result (from \texttt{main\_Q31\_Q32.m}):}
-$\hat k = -3.902$, $\hat a_1 = 0.5832$,
-$\hat a_0 = 38.58$,
-fit to estimation data $=78.4\,\%$.
+Following Remark~3, the transfer function is identified between the cart
+acceleration $a_{c}(t) = \ddot{x}_{c}(t)$ and the angle $\alpha(t)$, and the
+double derivative is applied afterwards.
 
-\subsection*{Q3.3) Estimation of $b_c$, $b_p$, $\l$ and $K_v$}
+Since $A_{c}(s) = s^{2} X_{c}(s)$, substituting into (3b) gives
+\begin{equation*}
+	0 = m \ell\, A_{c}(s)
+	+ \left[ m \ell^{2} s^{2} + b_{p} s + g m \ell \right] A(s)
+\end{equation*}
 
-The unknown parameters follow from a coefficient-by-coefficient comparison
-of the identified transfer functions with the analytical ones derived in
-Q2.
+Rearranging,
+\begin{align*}
+	G_{a_{c}\alpha}(s) &= \frac{A(s)}{A_{c}(s)}
+	= \frac{-m \ell}{m \ell^{2} s^{2} + b_{p} s + g m \ell} \tag{11a} \\
+	G_{a_{c}\alpha}(s) &= \frac{-\dfrac{1}{\ell}}
+	{s^{2} + \dfrac{b_{p}}{m \ell^{2}} s + \dfrac{g}{\ell}} \tag{11b}
+\end{align*}
 
-\paragraph{Step 1 -- from $G_{x\alpha}(s)$: obtain $\l$ and $b_p$
-(Remark~4).}
-Comparing~\eqref{eq:id_aca} with the analytical
-expression~\eqref{eq:Gaca},
-\begin{equation}
-\frac{\hat k}{s^{2}+\hat a_1 s+\hat a_0}
-\;\equiv\;
-\frac{-1/\l}{s^{2}+\dfrac{b_p}{m\l^{2}}s+\dfrac{g}{\l}}
-\qquad\Longrightarrow\qquad
-\left\{
-\begin{aligned}
-\hat a_0 &= \frac{g}{\l},\\[3pt]
-\hat a_1 &= \frac{b_p}{m\l^{2}},\\[3pt]
-\hat k   &= -\frac{1}{\l}.
-\end{aligned}
-\right.
-\end{equation}
-The first relation gives the length directly, the second the pivot
-friction:
-\begin{empheq}[box=\fbox]{align}
-\l   &= \frac{g}{\hat a_0}
-        \;=\; \frac{g}{\hat\omega_n^{\,2}},
-        \qquad \hat\omega_n = \sqrt{\hat a_0}
-\label{eq:ell}\\[4pt]
-b_p  &= m\,\l^{2}\,\hat a_1
-        \;=\; \frac{m\,g^{2}\,\hat a_1}{\hat a_0^{\,2}}
-        \;=\; 2\zeta\hat\omega_n\, m\,\l^{2},
-        \qquad \zeta=\frac{\hat a_1}{2\sqrt{\hat a_0}}
-\label{eq:bp}\\[4pt]
-L    &= \frac{3}{2}\,\l \qquad\text{(since } \l = 2L/3\text{)}
-\label{eq:Lrod}
-\end{empheq}
-The third relation, $\hat k=-1/\l$, is redundant and provides a useful
-\textbf{consistency check}: the value $-1/\hat k$ should agree with
-$g/\hat a_0$ to within the identification error. (If \texttt{tfest} returns
-$\hat k>0$, the encoder sign convention for $\alpha$ is inverted with
-respect to Fig.~2; negate \texttt{alpha\_rad} and re-identify.)
+The structure in (11b) has two poles and no zeros, so \texttt{tfest()} is
+called with \texttt{np = 2} and \texttt{nz = 0}, using the filtered cart
+acceleration \texttt{ac} as input and the measured angle \texttt{alpha\_rad}
+as output.
 
-\paragraph{Step 2 -- from $\tilde G_{ux}(s)$: obtain $K_v$ and $b_c$
-(Remark~4).}
-Comparing~\eqref{eq:id_uvc} with the analytical
-form~\eqref{eq:Guvc_simple}, $a = K_v/(M+m)$ and $b = b_c/(M+m)$, hence
-\begin{empheq}[box=\fbox]{align}
-K_v &= (M+m)\,\hat a
-     = 0.32\,\hat a \quad [\mathrm{N/V}]
-\label{eq:Kv}\\[3pt]
-b_c &= (M+m)\,\hat b
-     = 0.32\,\hat b \quad [\mathrm{N\,s/m}]
-\label{eq:bc}
-\end{empheq}
-Equivalently, in terms of the steady-state gain and time constant of the
-first-order speed response, $K_v = b_c\,\hat a/\hat b$ and
-$b_c = (M+m)/\hat\tau$.
+The identification returns
+\begin{equation*}
+	\hat{G}_{a_{c}\alpha}(s) = \frac{-3.902}{s^{2} + 0.5832 s + 38.58}
+	\tag{12}
+\end{equation*}
+with a fit to the estimation data of $78.4\,\%$.
 
-\paragraph{Summary of identified parameters.}
+Applying the double derivative,
+\begin{equation*}
+	\hat{G}_{x\alpha}(s) = s^{2}\,\hat{G}_{a_{c}\alpha}(s)
+	= \frac{-3.902\, s^{2}}{s^{2} + 0.5832 s + 38.58} \tag{13}
+\end{equation*}
+
+\subsection*{Q3.3}
+
+Following Remark~4, the transfer function $G_{x\alpha}(s)$ is used to
+estimate $\ell$ and $b_{p}$, and the simplified transfer function
+$\tilde{G}_{ux}(s)$ is used to estimate $K_{v}$ and $b_{c}$.
+
+Writing the identified result (12) in the general second-order form
+\begin{equation*}
+	\hat{G}_{a_{c}\alpha}(s) = \frac{\hat{k}}{s^{2} + \hat{a}_{1} s
+	+ \hat{a}_{0}}
+	\qquad
+	\hat{k} = -3.902, \quad \hat{a}_{1} = 0.5832, \quad \hat{a}_{0} = 38.58
+	\tag{14}
+\end{equation*}
+
+and comparing coefficient by coefficient with the analytical expression
+(11b),
+\begin{equation*}
+	\hat{a}_{0} = \frac{g}{\ell}
+	\qquad
+	\hat{a}_{1} = \frac{b_{p}}{m \ell^{2}}
+	\qquad
+	\hat{k} = -\frac{1}{\ell}
+	\tag{15}
+\end{equation*}
+
+From the first relation,
+\begin{align*}
+	\ell &= \frac{g}{\hat{a}_{0}} = \frac{9.81}{38.58} \\
+	\boxed{\; \ell = 0.2543~\mathrm{m} \;} \tag{16}
+\end{align*}
+
+Since $\ell = 2L/3$, the actual pendulum length is
+\begin{align*}
+	L &= \frac{3}{2}\,\ell = \frac{3}{2}\left( 0.2543 \right) \\
+	\boxed{\; L = 0.3814~\mathrm{m} \;} \tag{17}
+\end{align*}
+
+From the second relation,
+\begin{align*}
+	b_{p} &= m \ell^{2} \hat{a}_{1}
+	= \left( 0.1 \right)\left( 0.2543 \right)^{2}\left( 0.5832 \right) \\
+	\boxed{\; b_{p} = 3.771 \times 10^{-3}~\mathrm{N\,m\,s/rad} \;} \tag{18}
+\end{align*}
+
+The third relation in (15) is redundant and provides a consistency check on
+the identification:
+\begin{equation*}
+	-\frac{1}{\hat{k}} = \frac{1}{3.902} = 0.2563~\mathrm{m} \tag{19}
+\end{equation*}
+which agrees with (16) to within $0.79\,\%$.
+
+Turning to the cart, the identified result (9) is written in the general
+first-order form
+\begin{equation*}
+	\hat{G}_{uv_{c}}(s) = \frac{\hat{a}}{s + \hat{b}}
+	\qquad
+	\hat{a} = 0.887, \quad \hat{b} = 16.25
+	\tag{20}
+\end{equation*}
+
+Comparing with the analytical expression (8b), $\hat{a} = K_{v}/(M+m)$ and
+$\hat{b} = b_{c}/(M+m)$, so with $M + m = 0.32~\mathrm{kg}$,
+\begin{align*}
+	K_{v} &= \left( M + m \right) \hat{a}
+	= \left( 0.32 \right)\left( 0.887 \right) \\
+	\boxed{\; K_{v} = 0.2838~\mathrm{N/V} \;} \tag{21}
+\end{align*}
+and
+\begin{align*}
+	b_{c} &= \left( M + m \right) \hat{b}
+	= \left( 0.32 \right)\left( 16.25 \right) \\
+	\boxed{\; b_{c} = 5.200~\mathrm{N\,s/m} \;} \tag{22}
+\end{align*}
+
+The complete set of identified parameters is summarised below.
+
 \begin{center}
 \begin{tabular}{|l|l|c|l|}
 \hline
 \textbf{Parameter} & \textbf{Expression} & \textbf{Value} & \textbf{Units}\\
 \hline
-$\l$   & $g/\hat a_0$        & 0.2542768274 & m \\ \hline
-$L$    & $3\l/2$             & 0.3814152411 & m \\ \hline
-$b_p$  & $m\l^{2}\hat a_1$   & 0.003770779033 & N\,m\,s/rad \\ \hline
-$K_v$  & $(M+m)\hat a$       & 0.28384 & N/V \\ \hline
-$b_c$  & $(M+m)\hat b$       & 5.2 & N\,s/m \\ \hline
+$\ell$ & $g/\hat{a}_{0}$          & $0.2543$               & m \\ \hline
+$L$    & $3\ell/2$                & $0.3814$               & m \\ \hline
+$b_{p}$& $m\ell^{2}\hat{a}_{1}$   & $3.771\times10^{-3}$   & N\,m\,s/rad \\ \hline
+$K_{v}$& $\left(M+m\right)\hat{a}$& $0.2838$               & N/V \\ \hline
+$b_{c}$& $\left(M+m\right)\hat{b}$& $5.200$                & N\,s/m \\ \hline
 \end{tabular}
 \end{center}
 
-\paragraph{Sanity checks.} Before accepting the numbers, verify that
-(i) $\l$ is of the order of two thirds of the physical rod length measured
-in the lab; (ii) $\zeta \ll 1$, consistent with the lightly damped
-oscillation visible in Fig.~5; and (iii) the observed oscillation period in
-Fig.~5 satisfies $T \approx 2\pi\sqrt{\l/g}$.
+These values are physically consistent with the recorded response. From
+(11b) the pendulum natural frequency, oscillation period and damping ratio
+are
+\begin{equation*}
+	\omega_{n} = \sqrt{\hat{a}_{0}} = 6.211~\mathrm{rad/s}
+	\qquad
+	T = \frac{2\pi}{\omega_{n}} = 1.012~\mathrm{s}
+	\qquad
+	\zeta = \frac{\hat{a}_{1}}{2\sqrt{\hat{a}_{0}}} = 0.0469
+	\tag{23}
+\end{equation*}
+matching the lightly damped, approximately one-second oscillation observed
+in the experimental data. For the cart, the time constant and steady-state
+speed gain are
+\begin{equation*}
+	\tau = \frac{M+m}{b_{c}} = 61.5~\mathrm{ms}
+	\qquad
+	\frac{K_{v}}{b_{c}} = 0.0546~\mathrm{(m/s)/V}
+	\tag{24}
+\end{equation*}
 
-\subsection*{Q3.4) Nonlinear and linear simulation models}
+\subsection*{Q3.4}
 
-The Simulink file \texttt{sim\_2026\_cart\_pend.slx} implements the two
-models below with the parameters identified in Q3.3.
+\textbf{Nonlinear model.} Rearranging (1a) for $\ddot{x}_{c}$ and (1b) for
+$\ddot{\alpha}$ gives the two expressions implemented in Simulink:
+\begin{align*}
+	\ddot{x}_{c} &= \frac{K_{v} u - b_{c}\dot{x}_{c}
+	- m \ell \ddot{\alpha}\cos\alpha
+	+ m \ell \dot{\alpha}^{2}\sin\alpha}{M+m} \tag{25} \\
+	\ddot{\alpha} &= -\frac{b_{p}}{m \ell^{2}}\dot{\alpha}
+	- \frac{1}{\ell}\ddot{x}_{c}\cos\alpha
+	- \frac{g}{\ell}\sin\alpha \tag{26}
+\end{align*}
 
-\paragraph{Nonlinear model.} Writing~(1a)--(1b) in matrix form,
-\begin{equation}
-\begin{bmatrix}
-M+m & m\l\cos\alpha\\
-m\l\cos\alpha & m\l^{2}
-\end{bmatrix}
-\begin{bmatrix}\ddd x_c\\ \ddd\alpha\end{bmatrix}
-=
-\begin{bmatrix}
-K_v u - b_c\dd x_c + m\l\dd\alpha^{\,2}\sin\alpha\\
--\,b_p\dd\alpha - m g \l\sin\alpha
-\end{bmatrix},
-\end{equation}
-whose mass-matrix determinant is
-$\det = m\l^{2}\big(M+m\sin^{2}\alpha\big) > 0$ for all $\alpha$. Inverting,
-\begin{align}
-\ddd{x}_c &=
-\frac{\l\big(K_v u - b_c\dd x_c + m\l\dd\alpha^{2}\sin\alpha\big)
-      + \cos\alpha\big(b_p\dd\alpha + m g \l\sin\alpha\big)}
-     {\l\big(M+m\sin^{2}\alpha\big)},
-\label{eq:nl1}\\[4pt]
-\ddd{\alpha} &=
-\frac{-(M+m)\big(b_p\dd\alpha + m g\l\sin\alpha\big)
-      - m\l\cos\alpha\big(K_v u - b_c\dd x_c
-        + m\l\dd\alpha^{2}\sin\alpha\big)}
-     {m\l^{2}\big(M+m\sin^{2}\alpha\big)} .
-\label{eq:nl2}
-\end{align}
-Equations~\eqref{eq:nl1}--\eqref{eq:nl2} are implemented with integrator
-blocks initialised at $x_c(0)=v_c(0)=\alpha(0)=\omega(0)=0$.
+Each expression is built as a separate subsystem, with the accelerations fed
+through the integrator chains $\ddot{x}_{c} \to \dot{x}_{c} \to x_{c}$ and
+$\ddot{\alpha} \to \dot{\alpha} \to \alpha$, all initialised at zero. No
+small-angle approximation is applied, so the $\sin\alpha$, $\cos\alpha$ and
+$\dot{\alpha}^{2}$ terms are retained in full.
 
-\paragraph{Linear model.} As required by Remark~6, the linear branch uses
-the \textbf{full} $G_{ux}(s)$ of~\eqref{eq:Gux}--\eqref{eq:Delta} --- not
-the simplified $\tilde G_{ux}(s)$ --- cascaded with $G_{x\alpha}(s)$
-of~\eqref{eq:Gxa}, exactly as in Fig.~3.
+Because (25) requires $\ddot{\alpha}$ and (26) requires $\ddot{x}_{c}$, the
+two subsystems form an algebraic loop. The loop is well posed: substituting
+(26) into (25) shows that the loop gain is
+\begin{equation*}
+	\frac{m\cos^{2}\alpha}{M+m} \le \frac{0.1}{0.32} = 0.3125 < 1
+	\tag{27}
+\end{equation*}
+so the solver converges for every value of $\alpha$.
 
-\paragraph{Comparison.} \emph{[Insert the plot generated at the end of
-\texttt{main\_Q33\_Q34.m} comparing $x_c(t)$ and $\alpha(t)$ from the
-nonlinear and linear models for the same input $u(t)$.]}
+\optfig{fig_nl_xc.png}{0.98}{Nonlinear subsystem implementing (25), the cart
+acceleration $\ddot{x}_{c}$.}
 
-The two responses are expected to be indistinguishable while
-$|\alpha| \lesssim 10^\circ$, and to diverge for larger excitations, where
-the neglected terms $m\l\dd\alpha^{2}\sin\alpha$ and the curvature of
-$\sin\alpha$ become significant --- which quantifies the validity range of
-the linearisation assumptions A1)--A2) of Q2.1.
+\optfig{fig_nl_alpha.png}{0.98}{Nonlinear subsystem implementing (26), the
+angular acceleration $\ddot{\alpha}$.}
+
+\textbf{Linear model.} As required by Remark~6, the linear branch uses the
+full transfer function $G_{ux}(s)$ of (5) --- not the simplified
+$\tilde{G}_{ux}(s)$ --- cascaded with $G_{x\alpha}(s)$ of (4a).
+Substituting the identified parameters into (5) and (4a),
+\begin{equation*}
+	G_{ux}(s) = \frac{0.0018352\,s^{2} + 0.0010703\,s + 0.070803}
+	{0.0014224\,s^{4} + 0.034828\,s^{3} + 0.099431\,s^{2} + 1.2971\,s}
+	\tag{28}
+\end{equation*}
+\begin{equation*}
+	G_{x\alpha}(s) = \frac{-0.025428\,s^{2}}
+	{0.0064657\,s^{2} + 0.0037708\,s + 0.24945}
+	\tag{29}
+\end{equation*}
+
+\optfig{fig_linear.png}{0.98}{Linear branch: the full $G_{ux}(s)$ of (28)
+cascaded with $G_{x\alpha}(s)$ of (29).}
+
+\textbf{Comparison.} Both branches are driven by the same input, a
+$4~\mathrm{V}$ pulse of one second duration applied at $t = 2~\mathrm{s}$.
+
+\optfig{fig_q34_comparison.png}{1.0}{Simulated response of the nonlinear and
+linear models to the same input: applied voltage, cart position, pendulum
+angle, and the mismatch between the two models.}
+
+During the pulse the cart accelerates and settles to the steady-state speed
+predicted by (24), travelling approximately $0.217~\mathrm{m}$ before coming
+to rest when the voltage is removed. Because $G_{ux}(s)$ contains a free
+integrator and there is no position feedback, the cart holds that
+displacement for the remainder of the simulation. The pendulum is driven to
+a peak deflection of about $-6.8^{\circ}$ at the onset of the pulse and then
+rings down with the period and damping ratio predicted by (23).
+
+The two models are visually indistinguishable across the whole run. The
+mismatch remains below $0.2~\mathrm{mm}$ in $x_{c}$ and below
+$0.1^{\circ}$ in $\alpha$, that is under $0.1\,\%$ of the respective signal
+amplitudes.
+
+This is the expected outcome and it quantifies the validity of the
+linearisation assumptions made in Q2.1. At the observed peak of
+$|\alpha| = 6.8^{\circ} = 0.1187~\mathrm{rad}$, the approximation
+$\sin\alpha \approx \alpha$ carries a relative error of only $0.235\,\%$ and
+$\cos\alpha \approx 1$ an error of $0.703\,\%$. The neglected term
+$m\ell\dot{\alpha}^{2}\sin\alpha$ peaks at approximately
+$1.64~\mathrm{mN}$, which is $1.42\,\%$ of the corresponding retained term
+$m\ell\ddot{\alpha}\cos\alpha$ and only $0.144\,\%$ of the applied force
+$K_{v}u = 1.135~\mathrm{N}$.
+
+The two models would only be expected to separate visibly for a
+substantially larger excitation, where $|\alpha|$ grows beyond roughly
+$30^{\circ}$ and both the curvature of $\sin\alpha$ and the quadratic
+velocity term become significant.
 
 %=======================================================================
 \begin{thebibliography}{9}
