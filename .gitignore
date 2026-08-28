@@ -329,3 +329,58 @@ TSWLatexianTemp*
 # option is specified. Footnotes are the stored in a file with suffix Notes.bib.
 # Uncomment the next line to have this generated file ignored.
 #*Notes.bib
+
+### macOS
+# Finder metadata
+.DS_Store
+
+# Thumbnails
+._*
+
+# Custom folder icons
+Icon
+
+
+# Volume root files
+.DocumentRevisions-V100
+.fseventsd
+.Spotlight-V100
+.TemporaryItems
+.Trashes
+.VolumeIcon.icns
+.com.apple.timemachine.donotpresent
+
+# Autosave files
+*.asv
+*.m~
+*.autosave
+*.slx.r*
+*.mdl.r*
+*.bak
+
+# Derived content-obscured files
+*.p
+
+# Compiled MEX files
+*.mex*
+
+# Packaged app and toolbox files
+*.mlappinstall
+*.mltbx
+
+# Deployable archives
+*.ctf
+
+# Generated helpsearch folders
+helpsearch*/
+
+# Code generation folders
+slprj/
+sccprj/
+codegen/
+
+# Cache files
+*.slxc
+
+# Cloud based storage dotfile
+.MATLABDriveTag
