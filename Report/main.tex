@@ -53,7 +53,7 @@
 %------------------------------- header --------------------------------
 \fancypagestyle{uts}{%
   \fancyhf{}
-  \fancyhead[L]{\includegraphics[height=22pt]{uts_logo.png}\quad
+  \fancyhead[L]{\includegraphics[height=22pt]{assets/logos/uts_logo.png}\quad
                 \textbf{Demonstration Practical 1}}
   \fancyhead[R]{\footnotesize\begin{tabular}{@{}r@{}}
                 41277 Control Design\\ Spring 2026\\
@@ -70,7 +70,7 @@
 %=========================== COVER PAGE ================================
 \thispagestyle{empty}
 
-\includegraphics[height=30pt]{uts_logo.png}\hfill
+\includegraphics[height=30pt]{assets/logos/uts_logo.png}\hfill
 {\large\bfseries Faculty of Engineering and IT}
 
 \vspace{10pt}
@@ -775,10 +775,10 @@ two subsystems form an algebraic loop. The loop is well posed: substituting
 \end{equation*}
 so the solver converges for every value of $\alpha$.
 
-\optfig{fig_nl_xc.png}{0.98}{Nonlinear subsystem implementing (25), the cart
+\optfig{assets/images/fig_nl_xc.png}{0.98}{Nonlinear subsystem implementing (25), the cart
 acceleration $\ddot{x}_{c}$.}
 
-\optfig{fig_nl_alpha.png}{0.98}{Nonlinear subsystem implementing (26), the
+\optfig{assets/images/fig_nl_alpha.png}{0.98}{Nonlinear subsystem implementing (26), the
 angular acceleration $\ddot{\alpha}$.}
 
 \textbf{Linear model.} As required by Remark~6, the linear branch uses the
@@ -796,13 +796,13 @@ Substituting the identified parameters into (5) and (4a),
 	\tag{29}
 \end{equation*}
 
-\optfig{fig_linear.png}{0.98}{Linear branch: the full $G_{ux}(s)$ of (28)
+\optfig{assets/images/fig_linear.png}{0.98}{Linear branch: the full $G_{ux}(s)$ of (28)
 cascaded with $G_{x\alpha}(s)$ of (29).}
 
 \textbf{Comparison.} Both branches are driven by the same input, a
 $4~\mathrm{V}$ pulse of one second duration applied at $t = 2~\mathrm{s}$.
 
-\optfig{fig_q34_comparison.png}{1.0}{Simulated response of the nonlinear and
+\optfig{assets/images/fig_q34_comparison.png}{1.0}{Simulated response of the nonlinear and
 linear models to the same input: applied voltage, cart position, pendulum
 angle, and the mismatch between the two models.}
 
