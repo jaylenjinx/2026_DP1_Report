@@ -338,9 +338,7 @@ The nonlinear model provided:
 	+ m \ell \ddot{x}_{c} \cos\alpha + g m \ell \sin\alpha \tag{1b}
 \end{align}
 
-\subsection*{Q2.1)}
-
-For this question,
+\subsection*{Q2.1}
 
 The system is linearised around $\alpha = 0$ corresponding to the pendulum
 vertically facing downwards.
@@ -351,44 +349,46 @@ For small angular displacements around $\alpha = 0$,
 	\cos\alpha &\approx 1
 \end{align*}
 
-Non-linear higher-order term:
+The nonlinear higher-order term is neglected:
 \begin{equation*}
 	\dot{\alpha}^{2} \sin\alpha \approx 0
 \end{equation*}
 
 Applying approximations to (1a):
 \begin{equation*}
-	K_{v} u = \left( M + m \right) \ddot{x}_{c} + b_{c} \dot{x}_{c}
-	+ m l \ddot{\alpha}(1) - m l (0)
+    K_{v} u = \left( M + m \right) \ddot{x}_{c} + b_{c}\dot{x}_{c} 
+	+ m\ell\ddot{\alpha}(1) - m\ell\dot{\alpha}^{2}(0)
 \end{equation*}
 
 Applying approximations to (1b):
 \begin{equation*}
-	0 = m l^{2} \ddot{\alpha} + b_{p} \dot{\alpha}
-	+ m l \ddot{x}_{c}(1) + g m l (\alpha)
+    0 = m\ell^{2}\ddot{\alpha} + b_{p}\dot{\alpha}
+    + m\ell\ddot{x}_{c}(1) + gm\ell(\alpha)
 \end{equation*}
 
 Therefore,
 \begin{align}
-	K_{v} u &= \left( M + m \right) \ddot{x}_{c} + b_{c} \dot{x}_{c}
-	+ m \ell \ddot{\alpha} \tag{2a} \\
-	0 &= m \ell^{2} \ddot{\alpha} + b_{p} \dot{\alpha}
-	+ m \ell \ddot{x}_{c} + g m \ell \alpha \tag{2b}
+    K_{v}u &= \left( M+m \right)\ddot{x}_{c} + b_{c}\dot{x}_{c}
+    + m\ell\ddot{\alpha} \tag{2a} \\
+    0 &= m\ell^{2}\ddot{\alpha} + b_{p}\dot{\alpha}
+    + m\ell\ddot{x}_{c} + gm\ell\alpha \tag{2b}
 \end{align}
 
-\subsection*{Q2.2)}
+\subsection*{Q2.2}
 
 Assuming zero initial conditions, applying Laplace transform to (2a):
 \begin{equation*}
-	K_{v} U(s) = \left( M + m \right) s^{2} X_{c}(s) + b_{c} s X_{c}(s)
-	+ m l s^{2} A(s)
+    K_{v} U(s) = \left( M + m \right) s^{2}X_{c}(s) + b_{c} s X_{c}(s)
+    + m \ell s^{2} A(s)
 \end{equation*}
 
 Taking Laplace transform of (2b):
 \begin{equation*}
-	0 = m l^{2} s^{2} A(s) + b_{p} s A(s) + m l s^{2} X(s) + g m l A(s)
+    0 = m \ell^{2} s^{2} A(s) + b_{p} s A(s) + m \ell s^{2} X_{c}(s)
+    + gm \ell A(s)
 \end{equation*}
 
+Therefore, 
 \begin{align}
 	K_{v} U(s) &= \left[ \left( M + m \right) s^{2} + b_{c} s \right] X_{c}(s)
 	+ m \ell s^{2} A(s) \tag{3a} \\
@@ -400,20 +400,147 @@ $G_{x\alpha}(s)$:
 
 Rearranging (3b),
 \begin{equation*}
-	\left[ m l^{2} s^{2} + b_{p} s + g m l \right] A(s) = -m l s^{2} X(s)
+    \left[ m \ell^{2} s^{2} + b_{p} s + g m \ell \right] A(s) =
+    -m \ell s^{2} X_{c} (s)
 \end{equation*}
 
 \begin{equation*}
-	\frac{A(s)}{X(s)} = \frac{-m l s^{2}}{m l^{2} s^{2} + b_{p} s + g m l}
+    \frac{A(s)}{X_{c}(s)} = 
+	\frac{-m \ell s^{2}}{m \ell^{2} s^{2} + b_{p}s + g m \ell}
 \end{equation*}
 
+Therefore,
 \begin{align}
-	G_{x\alpha}(s) &= \frac{A(s)}{X(s)}
-	= -\frac{m l s^{2}}{m l^{2} s^{2} + b_{p} s + g m l} \tag{4a} \\
-	G_{x\alpha}(s) &= -\frac{s^{2}}{l s^{2} + \dfrac{b_{p}}{m l} s + g} \tag{4b}
+    G_{x\alpha}(s) &= \frac{A(s)}{X_{c}(s)}
+    = -\frac{m \ell s^{2}}{m \ell^{2} s^{2} + b_{p} s + g m \ell} \tag{4a} \\
+    G_{x\alpha}(s) &= -\frac{s^{2}}{\ell s^{2} + \dfrac{b_{p}}{m \ell}s + g} 
+	\tag{4b}
 \end{align}
 
-\subsection*{Q2.3)}
+$G_{ux}(s)$:
+
+From (4a), 
+\begin{equation*}
+    A(s) = -\frac{m \ell s^{2}}{m \ell^{2} s^{2} + b_{p} s + g m \ell} X_{c}(s)
+\end{equation*}
+
+Substituting into (3a),
+\begin{equation*}
+    K_{v} U(s) = \left[ \left( M + m \right) s^{2} + b_{c} s \right] X_{c}(s)
+    + m \ell s^{2} \left[ -\frac{m \ell s^{2}}{m \ell^{2} s^{2} + b_{p} s 
+	+ g m \ell} X_{c}(s) \right]
+\end{equation*}
+
+\begin{equation*}
+    K_{v} U(s) = \left[ \left( M + m \right) s^{2} + b_{c} s 
+	- \frac{m^{2} \ell^{2} s^{4}}{m \ell^{2} s^{2} + b_{p} s + g m \ell}
+    \right] X_{c}(s)
+\end{equation*}
+
+Therefore,
+\begin{equation*}
+    \frac{X_{c}(s)}{U(s)} = \frac{K_{v}}{\left( M + m \right) s^{2} + b_{c} s
+    - \dfrac{m^{2} \ell^{2} s^{4}}{m \ell^{2} s^{2} + b_{p} s + g m \ell}}
+\end{equation*}
+
+Multiplying the numerator and denominator by $m\ell^{2}s^{2}+b_{p}s+gm\ell$,
+\begin{equation*}
+    G_{ux}(s) = \frac{K_{v} \left( m \ell^{2} s^{2} + b_{p} s + g m \ell\right)}
+    {\left[ \left( M + m \right) s^{2} + b_{c} s \right] 
+	\left[ m \ell^{2} s^{2} + b_{p} s + g m \ell \right] - m^{2} \ell^{2} s^{4}}
+\end{equation*}
+
+Expanding the denominator,
+\begin{align*}
+	&\left[ \left( M + m \right) s^{2} + b_{c} s \right]
+    \left[ m \ell^{2} s^{2} + b_{p} s + g m \ell \right]
+    -m^{2}\ell^{2}s^{4} \\  
+    &= \left( M + m \right) m \ell^{2} s^{4}
+    + \left( M + m \right) b_{p} s^{3}
+    + \left( M + m \right) g m \ell s^{2} 
+    + b_{c} m \ell^{2} s^{3} + b_{c} b_{p} s^{2} + b_{c} g m \ell s
+    - m^{2} \ell^{2} s^{4} \\
+	&= M m \ell^{2} s^{4} + \left[ \left( M + m \right) b_{p} + b_{c} m \ell^{2} 
+	\right] s^{3} + \left[ \left( M + m \right) gm \ell + b_{c} b_{p} \right] 
+	s^{2} + b_{c} g m \ell s
+\end{align*}
+	
+Therefore,
+\begin{equation}
+    G_{ux}(s) = \frac{K_{v} \left( m \ell^{2} s^{2} + b_{p} s + g m \ell \right)}
+    {M m \ell^{2} s^{4} + \left[ \left( M + m \right) b_{p} + b_{c} m \ell^{2} 
+	\right] s^{3} + \left[ \left( M + m \right) g m \ell + b_{c} b_{p} \right]
+	s^{2} + b_{c} g m \ell s} \tag{5}
+\end{equation}
+
+$G_{u\alpha}(s)$:
+
+The overall cascaded transfer function is,
+\begin{equation*}
+    G_{u\alpha}(s) = G_{ux}(s) G_{x\alpha}(s)
+\end{equation*}
+
+Substituting (4a) and (5),
+\begin{equation*}
+    G_{u\alpha}(s) = \frac{ K_{v} \left( m \ell^{2} s^{2} + b_{p} s +g m \ell 
+	\right)}{M m \ell^{2} s^{4} + \left[ \left( M + m \right) b_{p} + b_{c} 
+	m \ell^{2} \right] s^{3} + \left[ \left( M + m \right) g m \ell + b_{c} 
+	b_{p} \right] s^{2} + b_{c} g m \ell s} \left[ \frac{-m \ell s^{2}}
+	{m \ell^{2} s^{2} + b_{p} s + g m \ell} \right]
+\end{equation*}
+
+Therefore,
+\begin{equation}
+    G_{u\alpha}(s) = \frac{-K_{v} m \ell s^{2}}{M m \ell^{2} s^{4}
+    + \left[ \left( M + m \right) b_{p} + b_{c} m \ell^{2} \right] s^{3}
+    + \left[ \left( M + m \right) g m \ell + b_{c} b_{p} \right]s^{2}
+    + b_{c} g m \ell s} \tag{6}
+\end{equation}
+
+\subsection*{Q2.3}
+
+From (1a), the effect of the pendulum angle over the cart is defined as,
+\begin{equation*}
+    d = \frac{ m \ell}{K_{v}} \left( \ddot{\alpha} \cos\alpha 
+	- \dot{\alpha}^{2} \sin\alpha \right)
+\end{equation*}
+
+Thus,
+\begin{equation*}
+    u = \frac{1}{K_{v}} \left[ \left( M + m \right) \ddot{x}_{c}
+    + b_{c} \dot{x}_{c} \right] + d
+\end{equation*}
+
+For small values of $m$, $\ell$ and small angular oscillations,
+\begin{equation*}
+    d \approx 0
+\end{equation*}
+
+Therefore,
+\begin{align*}
+    u &= \frac{1}{K_{v}} \left[ \left( M + m \right) \ddot{x}_{c}
+    + b_{c} \dot{x}_{c} \right] \\
+	K_{v}u &= \left( M + m \right) \ddot{x}_{c} + b_{c} \dot{x}_{c}
+\end{align*}
+
+Assuming zero initial conditions and applying the Laplace transform,
+\begin{align*}
+    K_{v} U(s) &= \left( M + m \right) s^{2} X_{c}(s) + b_{c} s X_{c}(s) \\
+	&= \left[ \left( M + m \right) s^{2} + b_{c} s \right] X_{c}(s)
+\end{align*}
+
+Therefore,
+\begin{equation*}
+    \frac{X_{c}(s)}{U(s)} = \frac{K_{v}}{\left( M + m \right)s^{2}+b_{c}s}
+\end{equation*}
+
+Hence,
+\begin{align}
+    \tilde{G}_{ux}(s) &= \frac{K_{v}}{\left( M + m \right) s^{2} 
+	+ b_{c} s} \tag{7a} \\
+    \tilde{G}_{ux}(s) &= \frac{K_{v}}{s \left[ \left( M + m \right) s 
+	+ b_{c} \right]} \tag{7b}
+\end{align}
 
 %=======================================================================
 \section*{Q3: Data-Based System Model Identification \hfill (40 marks)}
