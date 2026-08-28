@@ -6,8 +6,8 @@
 % A/Prof Ricardo Aguilera
 %
 % Team Member 1: Jaylen Avtarovski (24767939)
-% Team Member 2:
-% Team Member 3:
+% Team Member 2: Rhyse Williams (24817532)
+% Team Member 3: 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 clc;
 clear;
