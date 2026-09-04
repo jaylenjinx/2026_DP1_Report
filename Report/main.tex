@@ -1,0 +1,871 @@
+%=======================================================================
+%  41277 Control Design -- Spring 2026
+%  Demonstration Practical 1: System Modelling
+%  LaTeX version of the official Word answer template.
+%
+%  Compile with pdflatex (twice, for the header/refs).
+%  If the ebgaramond package is unavailable, comment out the
+%  \usepackage[lining]{ebgaramond} line below -- everything else still works.
+%=======================================================================
+\documentclass[11pt,a4paper]{article}
+
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[lining]{ebgaramond}          % Garamond, to match the Word template
+\usepackage[margin=2.2cm,top=3.2cm,headheight=42pt]{geometry}
+\usepackage{amsmath,amssymb,bm}
+\usepackage{mathtools}
+\usepackage{empheq}
+\usepackage{graphicx}
+\usepackage{float}          % provides the [H] "exactly here" placement
+\usepackage{array}
+\usepackage{booktabs}
+\usepackage{fancyhdr}
+\usepackage{enumitem}
+\usepackage{xcolor}
+\usepackage[colorlinks=true,linkcolor=black,urlcolor=blue!60!black,
+            citecolor=black]{hyperref}
+
+%----------------------------- house style -----------------------------
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{6pt}
+\allowdisplaybreaks
+\raggedbottom
+
+\newcommand{\dd}[1]{\dot{#1}}
+\newcommand{\ddd}[1]{\ddot{#1}}
+\renewcommand{\l}{\ell}
+
+% Section headings styled like the "Q1:", "Q2.1)" labels of the template
+\usepackage{titlesec}
+\titleformat{\section}{\large\bfseries}{}{0pt}{}
+\titleformat{\subsection}{\normalsize\bfseries}{}{0pt}{}
+\titlespacing*{\section}{0pt}{14pt}{4pt}
+\titlespacing*{\subsection}{0pt}{10pt}{2pt}
+
+
+% ---- figure that degrades to a placeholder box if the file is missing ----
+\newcommand{\optfig}[3]{%
+  \begin{figure}[H]\centering
+  \IfFileExists{#1}{\includegraphics[width=#2\linewidth]{#1}}%
+    {\fbox{\parbox[c][3.2cm][c]{0.9\linewidth}{\centering
+      \textit{[ Insert \texttt{\detokenize{#1}} here ]}}}}%
+  \caption{#3}\end{figure}}
+
+%------------------------------- header --------------------------------
+\fancypagestyle{uts}{%
+  \fancyhf{}
+  \fancyhead[L]{\includegraphics[height=22pt]{assets/logos/uts_logo.png}\quad
+                \textbf{Demonstration Practical 1}}
+  \fancyhead[R]{\footnotesize\begin{tabular}{@{}r@{}}
+                41277 Control Design\\ Spring 2026\\
+                Coordinator: A/Prof Ricardo P. Aguilera
+                \end{tabular}}
+  \renewcommand{\headrulewidth}{0.4pt}
+  \fancyfoot[C]{\thepage}
+}
+\pagestyle{uts}
+
+%=======================================================================
+\begin{document}
+
+%=========================== COVER PAGE ================================
+\thispagestyle{empty}
+
+\includegraphics[height=30pt]{assets/logos/uts_logo.png}\hfill
+{\large\bfseries Faculty of Engineering and IT}
+
+\vspace{10pt}
+
+\fbox{%
+\begin{minipage}{\dimexpr\textwidth-2\fboxsep-2\fboxrule\relax}
+\vspace{4pt}
+\centering{\Large\bfseries Assignment Cover Sheet}\par
+\vspace{8pt}
+\raggedright
+\textbf{Subject:} 41277 Control Design\par
+\vspace{4pt}
+\textbf{Assignment Number:} Demonstration Practical 1
+\hfill \textbf{Date Submitted:} 28/08/2026\par
+\vspace{4pt}
+\textbf{Assignment Title:} System Modelling\par
+\vspace{4pt}
+\textbf{Student Name(s) and Number(s)}\hfill\textbf{Tutorial Group:} 02\par
+\vspace{4pt}
+
+\begin{tabular}{@{}p{3.2cm}p{7cm}@{}}
+Jaylen Avtarovski  & 24767939 \\[6pt]
+Rhyse Williams & 24817532 \\[6pt]
+Elina Kim & 24949885 \\[6pt]
+\end{tabular}
+
+\vspace{10pt}
+\textbf{Declaration of Originality:}\par
+\vspace{2pt}
+{\small The work contained in this assignment, other than that specifically
+attributed to another source, is that of the author(s). It is recognised
+that, should this declaration be found to be false, disciplinary action
+could be taken and the assignments of all students involved will be given
+zero marks. In the statement below, I have indicated the extent to which I
+have collaborated with other students, whom I have named.\par
+\vspace{4pt}
+Acknowledge use of any copied or reworked materials (eg.\ text, equations,
+images, music, video) from generative artificial intelligence tools (GenAI)
+(such as ChatGPT, DALL-E) by declaring its use (you'll also need to follow
+the advice from your subject coordinator about whether you can use GenAI
+tools in assessments for that subject). Find out more about how to reference
+GenAI and ChatGPT in assessments.}\par
+
+\vspace{6pt}
+\textbf{GenAI Declaration:}\par
+\vspace{2pt}
+Generative AI (ChatGPT) was used solely to assist with LaTeX document
+formatting and presentation. All modelling derivations, MATLAB/Simulink work,
+calculations, analysis, and final technical conclusions were completed and
+checked by the group.\par
+
+\vspace{12pt}
+\textbf{Signature} \,\,\,\,\,\,\,\,\, J.A. \,\,\,\,\,\,\,\,\,|\,\,\,\,\,\,\,\,\, E.K. \,\,\,\,\,\,\,\,\,|\,\,\,\,\,\,\,\,\, R.W. \hfill \textbf{Date} 31 August 2026\par
+
+\vspace{10pt}
+\textbf{Statement of Collaboration:}\par
+\vspace{2pt}
+This assignment was completed collaboratively by Jaylen Avtarovski, Elina Kim, 
+and Rhyse Williams, with all three members contributing equally to the derivations, 
+analysis, and written responses across Q1, Q2, and Q3. All group discussions, 
+calculations, and write-ups were conducted jointly, and any external tools or 
+resources used have been acknowledged in accordance with UTS academic 
+integrity guidelines.
+\vspace{6pt}
+\end{minipage}}
+
+\vfill
+
+%========================= CONTRIBUTION TABLE ==========================
+\newpage
+
+\begin{center}
+\textbf{Contribution Weighting}\par
+\vspace{4pt}
+\begin{tabular}{|l|l|c|c|c|}
+\hline
+\textbf{Student Number} & \textbf{Student Name} & \textbf{Q1} & \textbf{Q2} & \textbf{Q3}\\
+\hline
+24767939 & Jaylen Avtarovski & 100 & 100 & 100\\ \hline
+24817532 & Rhyse Williams & 100 & 100 & 100\\ \hline
+24949885 & Elina Kim & 100 & 100 & 100\\ \hline
+\end{tabular}
+\end{center}
+
+\vspace{6pt}
+{\small Fill in each team member's percentage contribution to each question
+before submission.}
+
+\vspace{10pt}
+
+\begin{center}\large\bfseries Answers to the Assignment Questions:\end{center}
+
+%=======================================================================
+\section*{Q1: Cart Pendulum Modelling \hfill (20 marks)}
+%=======================================================================
+
+Using the required generalised coordinates,
+\begin{equation*}
+	q_{1} = x_{c} \qquad\qquad q_{2} = \phi
+\end{equation*}
+where $x_{c}$ is the horizontal displacement of the cart and $\phi$ is measured
+anticlockwise from the negative $x$-axis.
+
+From the geometry of the system, the pendulum mass position is
+\begin{align*}
+	x_{p} &= x_{c} - \ell \cos\phi \\
+	y_{p} &= -\ell \sin\phi
+\end{align*}
+where $\ell$ is the distance from the pivot to the centre of oscillation.
+
+Differentiating with respect to time,
+\begin{align*}
+	\dot{x}_{p} &= \dot{x}_{c} + \ell\dot{\phi}\sin\phi \\
+	\dot{y}_{p} &= -\ell\dot{\phi}\cos\phi
+\end{align*}
+
+The total co-kinetic energy of the system is the sum of the cart and pendulum
+kinetic energies:
+\begin{equation*}
+	T^{*} = T_{c} + T_{p}
+\end{equation*}
+with
+\begin{equation*}
+	T_{c} = \tfrac{1}{2} M \dot{x}_{c}^{2}
+\end{equation*}
+and
+\begin{equation*}
+	T_{p} = \tfrac{1}{2} m \left( \dot{x}_{p}^{2} + \dot{y}_{p}^{2} \right)
+\end{equation*}
+
+Therefore,
+\begin{equation*}
+	T^{*} = \frac{1}{2} M \dot{x}_{c}^{2}
+	+ \frac{1}{2} m \left[ \left( \dot{x}_{c} + \ell\dot{\phi}\sin\phi \right)^{2}
+	+ \left( -\ell\dot{\phi}\cos\phi \right)^{2} \right]
+\end{equation*}
+
+Simplifying,
+\begin{align*}
+	T^{*} &= \frac{1}{2} M \dot{x}_{c}^{2}
+	+ \frac{1}{2} m \left( \dot{x}_{c}^{2}
+	+ 2 \ell \dot{x}_{c} \dot{\phi} \sin\phi + \ell^{2}\dot{\phi}^{2} \right) \\
+	T^{*} &= \frac{1}{2} \left( M + m \right) \dot{x}_{c}^{2}
+	+ m \ell \dot{x}_{c} \dot{\phi} \sin\phi
+	+ \frac{1}{2} m \ell^{2} \dot{\phi}^{2}
+\end{align*}
+
+Taking the pivot height as the gravitational reference,
+\begin{align*}
+	V &= m g\, y_{p} \\
+	V &= -m g \ell \sin\phi
+\end{align*}
+
+The viscous friction of the cart and pendulum is represented using the Rayleigh
+dissipation function,
+\begin{equation*}
+	D = \frac{1}{2} b_{c} \dot{x}_{c}^{2} + \frac{1}{2} b_{p} \dot{\phi}^{2}
+\end{equation*}
+
+The Lagrangian of the system is defined as
+\begin{equation*}
+	L = T^{*} - V
+\end{equation*}
+
+Substituting the co-kinetic and potential energy expressions gives
+\begin{equation*}
+	L = \frac{1}{2} \left( M + m \right) \dot{x}_{c}^{2}
+	+ m \ell \dot{x}_{c} \dot{\phi} \sin\phi
+	+ \frac{1}{2} m \ell^{2} \dot{\phi}^{2}
+	+ m g \ell \sin\phi
+\end{equation*}
+
+The Euler--Lagrange equation including viscous dissipation is
+\begin{equation*}
+	\frac{d}{dt} \left( \frac{\partial L}{\partial \dot{q}_{i}} \right)
+	- \frac{\partial L}{\partial q_{i}}
+	+ \frac{\partial D}{\partial \dot{q}_{i}} = Q_{i}
+\end{equation*}
+
+For $q_{1} = x_{c}$,
+\begin{equation*}
+	\frac{\partial L}{\partial \dot{x}_{c}}
+	= \left( M + m \right) \dot{x}_{c} + m \ell \dot{\phi} \sin\phi
+\end{equation*}
+
+Taking the time derivative,
+\begin{equation*}
+	\frac{d}{dt} \left( \frac{\partial L}{\partial \dot{x}_{c}} \right)
+	= \left( M + m \right) \ddot{x}_{c}
+	+ m \ell \ddot{\phi} \sin\phi
+	+ m \ell \dot{\phi}^{2} \cos\phi
+\end{equation*}
+
+Also,
+\begin{equation*}
+	\frac{\partial L}{\partial x_{c}} = 0
+\end{equation*}
+and
+\begin{equation*}
+	\frac{\partial D}{\partial \dot{x}_{c}} = b_{c} \dot{x}_{c}
+\end{equation*}
+
+Since the generalised force associated with $x_{c}$ is
+\begin{equation*}
+	Q_{x_{c}} = F
+\end{equation*}
+substitution into the Euler--Lagrange equation gives the cart equation
+\begin{equation*}
+	\boxed{\;
+		F = \left( M + m \right) \ddot{x}_{c}
+		+ b_{c} \dot{x}_{c}
+		+ m \ell \ddot{\phi} \sin\phi
+		+ m \ell \dot{\phi}^{2} \cos\phi
+		\;} \tag{1a}
+\end{equation*}
+
+Using the same Euler--Lagrange equation:
+\begin{equation*}
+	\frac{d}{dt} \left( \frac{\partial L}{\partial \dot{\phi}} \right)
+	- \frac{\partial L}{\partial \phi}
+	+ \frac{\partial D}{\partial \dot{\phi}} = Q_{\phi}
+\end{equation*}
+
+For this system,
+\begin{equation*}
+	Q_{\phi} = 0
+\end{equation*}
+
+Considering the pendulum coordinate $q_{2} = \phi$,
+\begin{equation*}
+	\frac{\partial L}{\partial \dot{\phi}}
+	= m \ell \dot{x}_{c} \sin\phi + m \ell^{2} \dot{\phi}
+\end{equation*}
+
+Taking the time derivative,
+\begin{equation*}
+	\frac{d}{dt} \left( \frac{\partial L}{\partial \dot{\phi}} \right)
+	= m \ell \ddot{x}_{c} \sin\phi
+	+ m \ell \dot{x}_{c} \dot{\phi} \cos\phi
+	+ m \ell^{2} \ddot{\phi}
+\end{equation*}
+
+Now differentiate $L$ with respect to $\phi$:
+\begin{equation*}
+	\frac{\partial L}{\partial \phi}
+	= m \ell \dot{x}_{c} \dot{\phi} \cos\phi + m g \ell \cos\phi
+\end{equation*}
+
+For the dissipation term,
+\begin{equation*}
+	\frac{\partial D}{\partial \dot{\phi}} = b_{p} \dot{\phi}
+\end{equation*}
+
+Substituting into Euler--Lagrange:
+\begin{equation*}
+	m \ell \ddot{x}_{c} \sin\phi
+	+ m \ell \dot{x}_{c} \dot{\phi} \cos\phi
+	+ m \ell^{2} \ddot{\phi}
+	- \left( m \ell \dot{x}_{c} \dot{\phi} \cos\phi + m g \ell \cos\phi \right)
+	+ b_{p} \dot{\phi} = 0
+\end{equation*}
+
+The matching cross terms cancel, leaving
+\begin{equation*}
+	\boxed{\;
+		m \ell^{2} \ddot{\phi} + b_{p} \dot{\phi}
+		+ m \ell \ddot{x}_{c} \sin\phi - m g \ell \cos\phi = 0
+		\;} \tag{1b}
+\end{equation*}
+
+%=======================================================================
+\section*{Q2: Analytical Linear Model of a Cart Pendulum System
+	\hfill (40 marks)}
+%=======================================================================
+
+The nonlinear model provided:
+\begin{align}
+	K_{v} \cdot u &= \left( M + m \right) \ddot{x}_{c} + b_{c} \dot{x}_{c}
+	+ m \ell \ddot{\alpha} \cos\alpha
+	- m \ell \dot{\alpha}^{2} \sin\alpha \tag{1a} \\
+	0 &= m \ell^{2} \ddot{\alpha} + b_{p} \dot{\alpha}
+	+ m \ell \ddot{x}_{c} \cos\alpha + g m \ell \sin\alpha \tag{1b}
+\end{align}
+
+\subsection*{Q2.1}
+
+The system is linearised around $\alpha = 0$ corresponding to the pendulum
+vertically facing downwards.
+
+For small angular displacements around $\alpha = 0$,
+\begin{align*}
+	\sin\alpha &\approx \alpha \\
+	\cos\alpha &\approx 1
+\end{align*}
+
+The nonlinear higher-order term is neglected:
+\begin{equation*}
+	\dot{\alpha}^{2} \sin\alpha \approx 0
+\end{equation*}
+
+Applying approximations to (1a):
+\begin{equation*}
+    K_{v} u = \left( M + m \right) \ddot{x}_{c} + b_{c}\dot{x}_{c} 
+	+ m\ell\ddot{\alpha}(1) - m\ell\dot{\alpha}^{2}(0)
+\end{equation*}
+
+Applying approximations to (1b):
+\begin{equation*}
+    0 = m\ell^{2}\ddot{\alpha} + b_{p}\dot{\alpha}
+    + m\ell\ddot{x}_{c}(1) + gm\ell(\alpha)
+\end{equation*}
+
+Therefore,
+\begin{align}
+    K_{v}u &= \left( M+m \right)\ddot{x}_{c} + b_{c}\dot{x}_{c}
+    + m\ell\ddot{\alpha} \tag{2a} \\
+    0 &= m\ell^{2}\ddot{\alpha} + b_{p}\dot{\alpha}
+    + m\ell\ddot{x}_{c} + gm\ell\alpha \tag{2b}
+\end{align}
+
+\subsection*{Q2.2}
+
+Assuming zero initial conditions, applying Laplace transform to (2a):
+\begin{equation*}
+    K_{v} U(s) = \left( M + m \right) s^{2}X_{c}(s) + b_{c} s X_{c}(s)
+    + m \ell s^{2} A(s)
+\end{equation*}
+
+Taking Laplace transform of (2b):
+\begin{equation*}
+    0 = m \ell^{2} s^{2} A(s) + b_{p} s A(s) + m \ell s^{2} X_{c}(s)
+    + gm \ell A(s)
+\end{equation*}
+
+Therefore, 
+\begin{align}
+	K_{v} U(s) &= \left[ \left( M + m \right) s^{2} + b_{c} s \right] X_{c}(s)
+	+ m \ell s^{2} A(s) \tag{3a} \\
+	0 &= m \ell s^{2} X_{c}(s)
+	+ \left[ m \ell^{2} s^{2} + b_{p} s + g m \ell \right] A(s) \tag{3b}
+\end{align}
+
+$G_{x\alpha}(s)$:
+
+Rearranging (3b),
+\begin{equation*}
+    \left[ m \ell^{2} s^{2} + b_{p} s + g m \ell \right] A(s) =
+    -m \ell s^{2} X_{c} (s)
+\end{equation*}
+
+\begin{equation*}
+    \frac{A(s)}{X_{c}(s)} = 
+	\frac{-m \ell s^{2}}{m \ell^{2} s^{2} + b_{p}s + g m \ell}
+\end{equation*}
+
+Therefore,
+\begin{align}
+    G_{x\alpha}(s) &= \frac{A(s)}{X_{c}(s)}
+    = -\frac{m \ell s^{2}}{m \ell^{2} s^{2} + b_{p} s + g m \ell} \tag{4a} \\
+    G_{x\alpha}(s) &= -\frac{s^{2}}{\ell s^{2} + \dfrac{b_{p}}{m \ell}s + g} 
+	\tag{4b}
+\end{align}
+
+$G_{ux}(s)$:
+
+From (4a), 
+\begin{equation*}
+    A(s) = -\frac{m \ell s^{2}}{m \ell^{2} s^{2} + b_{p} s + g m \ell} X_{c}(s)
+\end{equation*}
+
+Substituting into (3a),
+\begin{equation*}
+    K_{v} U(s) = \left[ \left( M + m \right) s^{2} + b_{c} s \right] X_{c}(s)
+    + m \ell s^{2} \left[ -\frac{m \ell s^{2}}{m \ell^{2} s^{2} + b_{p} s 
+	+ g m \ell} X_{c}(s) \right]
+\end{equation*}
+
+\begin{equation*}
+    K_{v} U(s) = \left[ \left( M + m \right) s^{2} + b_{c} s 
+	- \frac{m^{2} \ell^{2} s^{4}}{m \ell^{2} s^{2} + b_{p} s + g m \ell}
+    \right] X_{c}(s)
+\end{equation*}
+
+Therefore,
+\begin{equation*}
+    \frac{X_{c}(s)}{U(s)} = \frac{K_{v}}{\left( M + m \right) s^{2} + b_{c} s
+    - \dfrac{m^{2} \ell^{2} s^{4}}{m \ell^{2} s^{2} + b_{p} s + g m \ell}}
+\end{equation*}
+
+Multiplying the numerator and denominator by $m\ell^{2}s^{2}+b_{p}s+gm\ell$,
+\begin{equation*}
+    G_{ux}(s) = \frac{K_{v} \left( m \ell^{2} s^{2} + b_{p} s + g m \ell\right)}
+    {\left[ \left( M + m \right) s^{2} + b_{c} s \right] 
+	\left[ m \ell^{2} s^{2} + b_{p} s + g m \ell \right] - m^{2} \ell^{2} s^{4}}
+\end{equation*}
+
+Expanding the denominator,
+\begin{align*}
+	&\left[ \left( M + m \right) s^{2} + b_{c} s \right]
+    \left[ m \ell^{2} s^{2} + b_{p} s + g m \ell \right]
+    -m^{2}\ell^{2}s^{4} \\  
+    &= \left( M + m \right) m \ell^{2} s^{4}
+    + \left( M + m \right) b_{p} s^{3}
+    + \left( M + m \right) g m \ell s^{2} 
+    + b_{c} m \ell^{2} s^{3} + b_{c} b_{p} s^{2} + b_{c} g m \ell s
+    - m^{2} \ell^{2} s^{4} \\
+	&= M m \ell^{2} s^{4} + \left[ \left( M + m \right) b_{p} + b_{c} m \ell^{2} 
+	\right] s^{3} + \left[ \left( M + m \right) gm \ell + b_{c} b_{p} \right] 
+	s^{2} + b_{c} g m \ell s
+\end{align*}
+	
+Therefore,
+\begin{equation}
+    G_{ux}(s) = \frac{K_{v} \left( m \ell^{2} s^{2} + b_{p} s + g m \ell \right)}
+    {M m \ell^{2} s^{4} + \left[ \left( M + m \right) b_{p} + b_{c} m \ell^{2} 
+	\right] s^{3} + \left[ \left( M + m \right) g m \ell + b_{c} b_{p} \right]
+	s^{2} + b_{c} g m \ell s} \tag{5}
+\end{equation}
+
+$G_{u\alpha}(s)$:
+
+The overall cascaded transfer function is,
+\begin{equation*}
+    G_{u\alpha}(s) = G_{ux}(s) G_{x\alpha}(s)
+\end{equation*}
+
+Substituting (4a) and (5),
+\begin{equation*}
+    G_{u\alpha}(s) = \frac{ K_{v} \left( m \ell^{2} s^{2} + b_{p} s +g m \ell 
+	\right)}{M m \ell^{2} s^{4} + \left[ \left( M + m \right) b_{p} + b_{c} 
+	m \ell^{2} \right] s^{3} + \left[ \left( M + m \right) g m \ell + b_{c} 
+	b_{p} \right] s^{2} + b_{c} g m \ell s} \left[ \frac{-m \ell s^{2}}
+	{m \ell^{2} s^{2} + b_{p} s + g m \ell} \right]
+\end{equation*}
+
+Therefore,
+\begin{equation}
+    G_{u\alpha}(s) = \frac{-K_{v} m \ell s^{2}}{M m \ell^{2} s^{4}
+    + \left[ \left( M + m \right) b_{p} + b_{c} m \ell^{2} \right] s^{3}
+    + \left[ \left( M + m \right) g m \ell + b_{c} b_{p} \right]s^{2}
+    + b_{c} g m \ell s} \tag{6}
+\end{equation}
+
+\subsection*{Q2.3}
+
+From (1a), the effect of the pendulum angle over the cart is defined as,
+\begin{equation*}
+    d = \frac{ m \ell}{K_{v}} \left( \ddot{\alpha} \cos\alpha 
+	- \dot{\alpha}^{2} \sin\alpha \right)
+\end{equation*}
+
+Thus,
+\begin{equation*}
+    u = \frac{1}{K_{v}} \left[ \left( M + m \right) \ddot{x}_{c}
+    + b_{c} \dot{x}_{c} \right] + d
+\end{equation*}
+
+For small values of $m$, $\ell$ and small angular oscillations,
+\begin{equation*}
+    d \approx 0
+\end{equation*}
+
+Therefore,
+\begin{align*}
+    u &= \frac{1}{K_{v}} \left[ \left( M + m \right) \ddot{x}_{c}
+    + b_{c} \dot{x}_{c} \right] \\
+	K_{v}u &= \left( M + m \right) \ddot{x}_{c} + b_{c} \dot{x}_{c}
+\end{align*}
+
+Assuming zero initial conditions and applying the Laplace transform,
+\begin{align*}
+    K_{v} U(s) &= \left( M + m \right) s^{2} X_{c}(s) + b_{c} s X_{c}(s) \\
+	&= \left[ \left( M + m \right) s^{2} + b_{c} s \right] X_{c}(s)
+\end{align*}
+
+Therefore,
+\begin{equation*}
+    \frac{X_{c}(s)}{U(s)} = \frac{K_{v}}{\left( M + m \right)s^{2}+b_{c}s}
+\end{equation*}
+
+Hence,
+\begin{align}
+    \tilde{G}_{ux}(s) &= \frac{K_{v}}{\left( M + m \right) s^{2} 
+	+ b_{c} s} \tag{7a} \\
+    \tilde{G}_{ux}(s) &= \frac{K_{v}}{s \left[ \left( M + m \right) s 
+	+ b_{c} \right]} \tag{7b}
+\end{align}
+
+%=======================================================================
+\section*{Q3: Data-Based System Model Identification \hfill (40 marks)}
+%=======================================================================
+
+The known parameters of the laboratory setup are
+\begin{equation*}
+	M = 0.22~\mathrm{kg} \qquad m = 0.1~\mathrm{kg}
+	\qquad g = 9.81~\mathrm{m/s^{2}}
+\end{equation*}
+while the friction coefficients $b_{c}$ and $b_{p}$, the length to the centre
+of oscillation $\ell$, and the input gain $K_{v}$ are unknown and must be
+identified from the pulse-response data recorded in Lab~3.
+
+\subsection*{Q3.1}
+
+Following Remark~2, the transfer function is identified between the input
+voltage $v_{m}(t)$ and the cart speed $v_{c}(t)$, and the integrator is
+appended afterwards. This avoids fitting the marginally stable pole at
+$s = 0$.
+
+Since $v_{c} = \dot{x}_{c}$, that is $V_{c}(s) = s X_{c}(s)$, the simplified
+model (7b) gives
+\begin{align*}
+	G_{uv_{c}}(s) &= s\,\tilde{G}_{ux}(s)
+	= \frac{K_{v}}{\left( M + m \right) s + b_{c}} \tag{8a} \\
+	G_{uv_{c}}(s) &= \frac{a}{s + b}
+	\qquad \text{where} \quad a = \frac{K_{v}}{M+m},
+	\quad b = \frac{b_{c}}{M+m} \tag{8b}
+\end{align*}
+
+The structure in (8b) has one pole and no zeros. The MATLAB function
+\texttt{tfest()} is therefore called with \texttt{np = 1} and \texttt{nz = 0},
+using the measured motor voltage \texttt{Vm} as input and the filtered
+derivative \texttt{vc} as output.
+
+The identification returns
+\begin{equation*}
+	\hat{G}_{uv_{c}}(s) = \frac{0.887}{s + 16.25} \tag{9}
+\end{equation*}
+with a fit to the estimation data of $93.97\,\%$.
+
+Appending the integrator,
+\begin{equation*}
+	\tilde{G}_{ux}(s) = \frac{1}{s}\,\hat{G}_{uv_{c}}(s)
+	= \frac{0.887}{s \left( s + 16.25 \right)} \tag{10}
+\end{equation*}
+
+\subsection*{Q3.2}
+
+Following Remark~3, the transfer function is identified between the cart
+acceleration $a_{c}(t) = \ddot{x}_{c}(t)$ and the angle $\alpha(t)$, and the
+double derivative is applied afterwards.
+
+Since $A_{c}(s) = s^{2} X_{c}(s)$, substituting into (3b) gives
+\begin{equation*}
+	0 = m \ell\, A_{c}(s)
+	+ \left[ m \ell^{2} s^{2} + b_{p} s + g m \ell \right] A(s)
+\end{equation*}
+
+Rearranging,
+\begin{align*}
+	G_{a_{c}\alpha}(s) &= \frac{A(s)}{A_{c}(s)}
+	= \frac{-m \ell}{m \ell^{2} s^{2} + b_{p} s + g m \ell} \tag{11a} \\
+	G_{a_{c}\alpha}(s) &= \frac{-\dfrac{1}{\ell}}
+	{s^{2} + \dfrac{b_{p}}{m \ell^{2}} s + \dfrac{g}{\ell}} \tag{11b}
+\end{align*}
+
+The structure in (11b) has two poles and no zeros, so \texttt{tfest()} is
+called with \texttt{np = 2} and \texttt{nz = 0}, using the filtered cart
+acceleration \texttt{ac} as input and the measured angle \texttt{alpha\_rad}
+as output.
+
+The identification returns
+\begin{equation*}
+	\hat{G}_{a_{c}\alpha}(s) = \frac{-3.902}{s^{2} + 0.5832 s + 38.58}
+	\tag{12}
+\end{equation*}
+with a fit to the estimation data of $78.4\,\%$.
+
+Applying the double derivative,
+\begin{equation*}
+	\hat{G}_{x\alpha}(s) = s^{2}\,\hat{G}_{a_{c}\alpha}(s)
+	= \frac{-3.902\, s^{2}}{s^{2} + 0.5832 s + 38.58} \tag{13}
+\end{equation*}
+
+\subsection*{Q3.3}
+
+Following Remark~4, the transfer function $G_{x\alpha}(s)$ is used to
+estimate $\ell$ and $b_{p}$, and the simplified transfer function
+$\tilde{G}_{ux}(s)$ is used to estimate $K_{v}$ and $b_{c}$.
+
+Writing the identified result (12) in the general second-order form
+\begin{equation*}
+	\hat{G}_{a_{c}\alpha}(s) = \frac{\hat{k}}{s^{2} + \hat{a}_{1} s
+	+ \hat{a}_{0}}
+	\qquad
+	\hat{k} = -3.902, \quad \hat{a}_{1} = 0.5832, \quad \hat{a}_{0} = 38.58
+	\tag{14}
+\end{equation*}
+
+and comparing coefficient by coefficient with the analytical expression
+(11b),
+\begin{equation*}
+	\hat{a}_{0} = \frac{g}{\ell}
+	\qquad
+	\hat{a}_{1} = \frac{b_{p}}{m \ell^{2}}
+	\qquad
+	\hat{k} = -\frac{1}{\ell}
+	\tag{15}
+\end{equation*}
+
+From the first relation,
+\begin{align*}
+	\ell &= \frac{g}{\hat{a}_{0}} = \frac{9.81}{38.58} \\
+	\boxed{\; \ell = 0.2543~\mathrm{m} \;} \tag{16}
+\end{align*}
+
+Since $\ell = 2L/3$, the actual pendulum length is
+\begin{align*}
+	L &= \frac{3}{2}\,\ell = \frac{3}{2}\left( 0.2543 \right) \\
+	\boxed{\; L = 0.3814~\mathrm{m} \;} \tag{17}
+\end{align*}
+
+From the second relation,
+\begin{align*}
+	b_{p} &= m \ell^{2} \hat{a}_{1}
+	= \left( 0.1 \right)\left( 0.2543 \right)^{2}\left( 0.5832 \right) \\
+	\boxed{\; b_{p} = 3.771 \times 10^{-3}~\mathrm{N\,m\,s/rad} \;} \tag{18}
+\end{align*}
+
+The third relation in (15) is redundant and provides a consistency check on
+the identification:
+\begin{equation*}
+	-\frac{1}{\hat{k}} = \frac{1}{3.902} = 0.2563~\mathrm{m} \tag{19}
+\end{equation*}
+which agrees with (16) to within $0.79\,\%$.
+
+Turning to the cart, the identified result (9) is written in the general
+first-order form
+\begin{equation*}
+	\hat{G}_{uv_{c}}(s) = \frac{\hat{a}}{s + \hat{b}}
+	\qquad
+	\hat{a} = 0.887, \quad \hat{b} = 16.25
+	\tag{20}
+\end{equation*}
+
+Comparing with the analytical expression (8b), $\hat{a} = K_{v}/(M+m)$ and
+$\hat{b} = b_{c}/(M+m)$, so with $M + m = 0.32~\mathrm{kg}$,
+\begin{align*}
+	K_{v} &= \left( M + m \right) \hat{a}
+	= \left( 0.32 \right)\left( 0.887 \right) \\
+	\boxed{\; K_{v} = 0.2838~\mathrm{N/V} \;} \tag{21}
+\end{align*}
+and
+\begin{align*}
+	b_{c} &= \left( M + m \right) \hat{b}
+	= \left( 0.32 \right)\left( 16.25 \right) \\
+	\boxed{\; b_{c} = 5.200~\mathrm{N\,s/m} \;} \tag{22}
+\end{align*}
+
+The complete set of identified parameters is summarised below.
+
+\begin{center}
+\begin{tabular}{|l|l|c|l|}
+\hline
+\textbf{Parameter} & \textbf{Expression} & \textbf{Value} & \textbf{Units}\\
+\hline
+$\ell$ & $g/\hat{a}_{0}$          & $0.2543$               & m \\ \hline
+$L$    & $3\ell/2$                & $0.3814$               & m \\ \hline
+$b_{p}$& $m\ell^{2}\hat{a}_{1}$   & $3.771\times10^{-3}$   & N\,m\,s/rad \\ \hline
+$K_{v}$& $\left(M+m\right)\hat{a}$& $0.2838$               & N/V \\ \hline
+$b_{c}$& $\left(M+m\right)\hat{b}$& $5.200$                & N\,s/m \\ \hline
+\end{tabular}
+\end{center}
+
+These values are physically consistent with the recorded response. From
+(11b) the pendulum natural frequency, oscillation period and damping ratio
+are
+\begin{equation*}
+	\omega_{n} = \sqrt{\hat{a}_{0}} = 6.211~\mathrm{rad/s}
+	\qquad
+	T = \frac{2\pi}{\omega_{n}} = 1.012~\mathrm{s}
+	\qquad
+	\zeta = \frac{\hat{a}_{1}}{2\sqrt{\hat{a}_{0}}} = 0.0469
+	\tag{23}
+\end{equation*}
+matching the lightly damped, approximately one-second oscillation observed
+in the experimental data. For the cart, the time constant and steady-state
+speed gain are
+\begin{equation*}
+	\tau = \frac{M+m}{b_{c}} = 61.5~\mathrm{ms}
+	\qquad
+	\frac{K_{v}}{b_{c}} = 0.0546~\mathrm{(m/s)/V}
+	\tag{24}
+\end{equation*}
+
+\subsection*{Q3.4}
+
+\textbf{Nonlinear model.} Rearranging (1a) for $\ddot{x}_{c}$ and (1b) for
+$\ddot{\alpha}$ gives the two expressions implemented in Simulink:
+\begin{align*}
+	\ddot{x}_{c} &= \frac{K_{v} u - b_{c}\dot{x}_{c}
+	- m \ell \ddot{\alpha}\cos\alpha
+	+ m \ell \dot{\alpha}^{2}\sin\alpha}{M+m} \tag{25} \\
+	\ddot{\alpha} &= -\frac{b_{p}}{m \ell^{2}}\dot{\alpha}
+	- \frac{1}{\ell}\ddot{x}_{c}\cos\alpha
+	- \frac{g}{\ell}\sin\alpha \tag{26}
+\end{align*}
+
+\clearpage
+
+Each expression is built as a separate subsystem, with the accelerations fed
+through the integrator chains $\ddot{x}_{c} \to \dot{x}_{c} \to x_{c}$ and
+$\ddot{\alpha} \to \dot{\alpha} \to \alpha$, all initialised at zero. No
+small-angle approximation is applied, so the $\sin\alpha$, $\cos\alpha$ and
+$\dot{\alpha}^{2}$ terms are retained in full.
+
+Because (25) requires $\ddot{\alpha}$ and (26) requires $\ddot{x}_{c}$, the
+two subsystems form an algebraic loop. The loop is well posed: substituting
+(26) into (25) shows that the loop gain is
+\begin{equation*}
+	\frac{m\cos^{2}\alpha}{M+m} \le \frac{0.1}{0.32} = 0.3125 < 1
+	\tag{27}
+\end{equation*}
+so the solver converges for every value of $\alpha$.
+
+\optfig{assets/images/fig_nl_xc.png}{0.98}{Nonlinear subsystem implementing (25), the cart
+acceleration $\ddot{x}_{c}$.}
+
+\optfig{assets/images/fig_nl_alpha.png}{0.98}{Nonlinear subsystem implementing (26), the
+angular acceleration $\ddot{\alpha}$.}
+
+\clearpage
+
+\textbf{Linear model.} As required by Remark~6, the linear branch uses the
+full transfer function $G_{ux}(s)$ of (5) --- not the simplified
+$\tilde{G}_{ux}(s)$ --- cascaded with $G_{x\alpha}(s)$ of (4a).
+Substituting the identified parameters into (5) and (4a),
+\begin{equation*}
+	G_{ux}(s) = \frac{0.0018352\,s^{2} + 0.0010703\,s + 0.070803}
+	{0.0014224\,s^{4} + 0.034828\,s^{3} + 0.099431\,s^{2} + 1.2971\,s}
+	\tag{28}
+\end{equation*}
+\begin{equation*}
+	G_{x\alpha}(s) = \frac{-0.025428\,s^{2}}
+	{0.0064657\,s^{2} + 0.0037708\,s + 0.24945}
+	\tag{29}
+\end{equation*}
+
+\optfig{assets/images/fig_linear.png}{0.98}{Linear branch: the full $G_{ux}(s)$ of (28)
+cascaded with $G_{x\alpha}(s)$ of (29).}
+
+\textbf{Comparison.} Both branches are driven by the same input, a
+$4~\mathrm{V}$ pulse of one second duration applied at $t = 2~\mathrm{s}$.
+
+\optfig{assets/images/fig_q34_comparison.png}{1.0}{Simulated response of the nonlinear and
+linear models to the same input: applied voltage, cart position, pendulum
+angle, and the mismatch between the two models.}
+
+During the pulse the cart accelerates and settles to the steady-state speed
+predicted by (24), travelling approximately $0.217~\mathrm{m}$ before coming
+to rest when the voltage is removed. Because $G_{ux}(s)$ contains a free
+integrator and there is no position feedback, the cart holds that
+displacement for the remainder of the simulation. The pendulum is driven to
+a peak deflection of about $-6.8^{\circ}$ at the onset of the pulse and then
+rings down with the period and damping ratio predicted by (23).
+
+The two models are visually indistinguishable across the whole run. The
+mismatch remains below $0.2~\mathrm{mm}$ in $x_{c}$ and below
+$0.1^{\circ}$ in $\alpha$, indicating very close agreement between the 
+two models.
+
+This is the expected outcome and it quantifies the validity of the
+linearisation assumptions made in Q2.1. At the observed peak of
+$|\alpha| = 6.8^{\circ} = 0.1187~\mathrm{rad}$, the approximation
+$\sin\alpha \approx \alpha$ carries a relative error of only $0.235\,\%$ and
+$\cos\alpha \approx 1$ an error of $0.703\,\%$. The neglected term
+$m\ell\dot{\alpha}^{2}\sin\alpha$ peaks at approximately
+$1.64~\mathrm{mN}$, which is $1.42\,\%$ of the corresponding retained term
+$m\ell\ddot{\alpha}\cos\alpha$ and only $0.144\,\%$ of the applied force
+$K_{v}u = 1.135~\mathrm{N}$.
+
+The two models would only be expected to separate visibly for a
+substantially larger excitation, where $|\alpha|$ grows beyond roughly
+$30^{\circ}$ and both the curvature of $\sin\alpha$ and the quadratic
+velocity term become significant.
+
+\clearpage
+
+%=======================================================================
+\begin{thebibliography}{9}
+
+\bibitem{aguilera2026}
+R. P. Aguilera, \emph{Lecture Notes on System Modelling}, University of
+Technology Sydney, Australia, 2026.
+
+\bibitem{ctms}
+B. Messner and D. Tilbury, \emph{Control Tutorials for MATLAB and Simulink},
+University of Michigan, USA. [Online]. Available:
+\url{http://ctms.engin.umich.edu/CTMS}
+
+\bibitem{ljung}
+L. Ljung, \emph{System Identification Toolbox User's Guide}, The MathWorks.
+[Online]. Available:
+\url{https://ch.mathworks.com/help/pdf_doc/ident/ident_ug.pdf}
+\end{thebibliography}
+
+\end{document}
